@@ -1,0 +1,111 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 495,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 761,
+            "y": 226.625
+          },
+          "nodeIndex": "ValidateReportHR",
+          "nodeLineageTag": "e89964a9-42d2-4322-a6b1-f713b38ee1a4",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1516,
+            "y": 486.625
+          },
+          "nodeIndex": "VW_Reporting_Calendar",
+          "nodeLineageTag": "d9154f87-8c58-4415-8558-c2ef5e6226a7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 109,
+            "y": 161.625
+          },
+          "nodeIndex": "DimCalendar",
+          "nodeLineageTag": "e867b1ff-689d-456d-abe0-30e96919c440",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1700,
+            "y": 376.125
+          },
+          "nodeIndex": "Measures Table",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1191,
+            "y": 387.625
+          },
+          "nodeIndex": "Last Saturdays",
+          "nodeLineageTag": "9b2f5518-db3d-44eb-8df3-b02cb86d8a76",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 420.625,
+            "y": 0
+          },
+          "nodeIndex": "DimServiceLocationsMapping",
+          "nodeLineageTag": "b59e406d-9350-44b7-a521-51d8a6548ebb",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1168,
+            "y": 26.3125
+          },
+          "nodeIndex": "Saturday date",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 7
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}
