@@ -4,7 +4,7 @@
     "annotations": [
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"ValidateReportHR\",\"VW_Reporting_Calendar\",\"DimCalendar\",\"Measures Table\",\"DimServiceLocationsMapping\"]"
+        "value": "[\"ValidateReportHR\",\"VW_Reporting_Calendar\",\"DimCalendar\",\"Measures Table\",\"DimServiceLocationsMapping\",\"DataValidationReasons\"]"
       },
       {
         "name": "__PBI_TimeIntelligenceEnabled",
@@ -12,7 +12,7 @@
       },
       {
         "name": "PBIDesktopVersion",
-        "value": "2.122.746.0 (23.10)"
+        "value": "2.124.1052.0 (23.12)"
       },
       {
         "name": "PBI_ProTooling",
@@ -229,6 +229,13 @@
         "fromTable": "ValidateReportHR",
         "toColumn": "Index",
         "toTable": "Saturday date"
+      },
+      {
+        "name": "bc37a1e0-2734-4d1d-a4cb-1a50c8ff64ba",
+        "fromColumn": "ValidationFailReason",
+        "fromTable": "ValidateReportHR",
+        "toColumn": "ValidationReason",
+        "toTable": "DataValidationReasons"
       }
     ],
     "sourceQueryCulture": "en-US",
@@ -823,6 +830,10 @@
               {
                 "name": "UnderlyingDateTimeDataType",
                 "value": "Date"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isDateTimeCustom\":true}"
               }
             ],
             "changedProperties": [
@@ -843,7 +854,7 @@
               "    BLANK()",
               ")"
             ],
-            "formatString": "Long Date",
+            "formatString": "d mmmm\\, yyyy",
             "isDataTypeInferred": true,
             "lineageTag": "933ab0e7-766f-47d8-b740-1dbfd151ccd5",
             "summarizeBy": "none",
@@ -889,6 +900,40 @@
             "isDataTypeInferred": true,
             "lineageTag": "be892faa-0791-4eb3-a19c-260609ddc6f4",
             "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Reasons_related",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "expression": [
+              "RELATED(DataValidationReasons[ValidationReason])",
+              ""
+            ],
+            "isDataTypeInferred": true,
+            "lineageTag": "e885079c-e190-42e5-acec-890555e8a5e2",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Count",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "expression": "DISTINCTCOUNT(ValidateReportHR[Reasons_related])",
+            "formatString": "0",
+            "isDataTypeInferred": true,
+            "lineageTag": "67e8c96b-1a56-4889-98a2-3d1931a69842",
+            "summarizeBy": "sum",
             "type": "calculated"
           }
         ],
@@ -5729,7 +5774,16 @@
           },
           {
             "name": "Errors Count",
-            "expression": "COUNT(ValidateReportHR[ValidationFailReason])",
+            "expression": [
+              "CALCULATE(",
+              "    COUNTROWS('ValidateReportHR'),",
+              "    FILTER(",
+              "        'ValidateReportHR',",
+              "        //'ValidateReportHR'[Date] = EARLIER('YourTable'[Date]) &&",
+              "        NOT(ISBLANK('ValidateReportHR'[Reasons_related]))",
+              "    )",
+              ") +0"
+            ],
             "formatString": "0",
             "lineageTag": "0a0f798b-bdf0-42b9-b453-2f5392d2c273"
           },
@@ -5878,6 +5932,23 @@
             ],
             "formatString": "0",
             "lineageTag": "439ffeee-c7aa-4511-9b0d-629b5d6510dc"
+          },
+          {
+            "name": "Count Blank",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "    COUNTROWS('ValidateReportHR'),",
+              "    FILTER(",
+              "        'ValidateReportHR',",
+              "        //'ValidateReportHR'[Date] = EARLIER('YourTable'[Date]) &&",
+              "        NOT(ISBLANK('ValidateReportHR'[Reasons_related]))",
+              "    )",
+              ") + 0",
+              ""
+            ],
+            "formatString": "0",
+            "lineageTag": "79348f39-3fc1-4c87-8276-6c3e795d33fa"
           }
         ],
         "partitions": [
@@ -7307,6 +7378,19 @@
             "lineageTag": "679eb616-5b6a-49f5-887a-293a90665ac6",
             "sourceColumn": "DCA_Manager",
             "summarizeBy": "none"
+          },
+          {
+            "name": "Full_Address",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "47dbc55e-8709-4561-b248-8b7e69f9b0e5",
+            "sourceColumn": "Full_Address",
+            "summarizeBy": "none"
           }
         ],
         "lineageTag": "b59e406d-9350-44b7-a521-51d8a6548ebb",
@@ -7342,10 +7426,14 @@
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isDateTimeCustom\":true}"
               }
             ],
             "dataType": "dateTime",
-            "formatString": "Long Date",
+            "formatString": "d mmmm\\, yyyy",
             "isDataTypeInferred": true,
             "isNameInferred": true,
             "lineageTag": "e75b891d-4f6b-49ff-9657-f61b3daaab88",
@@ -7635,6 +7723,68 @@
           }
         ],
         "showAsVariationsOnly": true
+      },
+      {
+        "name": "DataValidationReasons",
+        "columns": [
+          {
+            "name": "ValidationKey",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "054dea43-a16b-40fe-8bee-2d53dabbe94d",
+            "sourceColumn": "ValidationKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "ValidationReason",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "6b84d6b0-b8d6-495e-b60e-22dcccccd4ff",
+            "sourceColumn": "ValidationReason",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Source",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "cf1f1554-9c03-4a2a-b7b2-14876fa87b85",
+            "sourceColumn": "Source",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "8ff54a6e-4143-4b21-b2b2-ebe88ccf4a45",
+        "partitions": [
+          {
+            "name": "DataValidationReasons",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Sql.Database(\"sqlminstanceatprod.public.6ebcd2a481ea.database.windows.net,3342\", \"ATDMP\"),",
+                "    dbo_DataValidationReasons = Source{[Schema=\"dbo\",Item=\"DataValidationReasons\"]}[Data]",
+                "in",
+                "    dbo_DataValidationReasons"
+              ],
+              "type": "m"
+            }
+          }
+        ]
       }
     ]
   }
